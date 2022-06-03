@@ -17,7 +17,7 @@ NODE_MOTION_SPEED_CONTROL:
   respawn: true
   respawn_delay: 5.0
 NODE_PLOTTER:
-  launch: 0
+  launch: 1
   node_executable: plotter_node
   package: plotter
   respawn: true
