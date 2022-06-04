@@ -24,7 +24,7 @@ rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn WheelO
 
     // Subscribers
     m_imu_sub = this->create_subscription<sensor_msgs::msg::Imu>("/imu/data", default_qos,
-                                                                 std::bind(&WheelOdometry::ImuCb, this, _1));
+                                                                std::bind(&WheelOdometry::ImuCb, this, _1));
 
     m_motors_rpm_sub = this->create_subscription<usr_msgs::msg::MotorsRPM>(
         "/uavcan/chassis/motors_rpm_feedback", default_qos, std::bind(&WheelOdometry::MotorsRPMCb, this, _1));
@@ -82,8 +82,8 @@ rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn WheelO
 
 // Subscribers callbacks
 bool WheelOdometry::RestartOdometryCb(const std::shared_ptr<rmw_request_id_t> request_header,
-                                      const std::shared_ptr<std_srvs::srv::SetBool::Request> request,
-                                      std::shared_ptr<std_srvs::srv::SetBool::Response> response)
+                                        const std::shared_ptr<std_srvs::srv::SetBool::Request> request,
+                                        std::shared_ptr<std_srvs::srv::SetBool::Response> response)
 {
     (void)request_header;
     (void)request;
@@ -179,10 +179,11 @@ void WheelOdometry::CalculateOdometry()
     /* Wheels linear velocities */
     /********************************************
      * Calculate your Amazing Linear Velocity for each Wheel HERE
-    float FR_vel = ?;
-    float RR_vel = ?;
-    float RL_vel = ?;
-    float FL_vel = ?;
+     */
+    float FR_vel = 2 * PI * m_wheel_rad * m_motors_rpm.rpms_fr / 60;
+    float RR_vel = 2 * PI * m_wheel_rad * m_motors_rpm.rpms_rr / 60;
+    float RL_vel = 2 * PI * m_wheel_rad * m_motors_rpm.rpms_rl / 60;
+    float FL_vel = 2 * PI * m_wheel_rad * m_motors_rpm.rpms_fl / 60;
     /********************************************
      * END CODE
      *  ********************************************/
@@ -216,22 +217,24 @@ void WheelOdometry::CalculateOdometry()
     /* Wheels linear velocities */
     /********************************************
      * Calculate the X and Y positions
-    float delta_X = ?;
-    float delta_Y = ?;
+     */
+    float delta_X = X_dot*dt;
+    float delta_Y = Y_dot*dt;
 
-    // Don't forget the offset :smile:
-    float X = ?;
-    float Y = ?;
+    // Don't forget the offset :smile: the offset would be the last value
+    //of the X axis odometry ?
+    float X = delta_X+m_local_wheel_odom_msg.pose.pose.position.x;
+    float Y = delta_Y+m_local_wheel_odom_msg.pose.pose.position.y;
 
-    m_local_wheel_odom_msg.pose.pose.position.x = ?;
-    m_local_wheel_odom_msg.pose.pose.position.y = ?;
+    m_local_wheel_odom_msg.pose.pose.position.x = X;
+    m_local_wheel_odom_msg.pose.pose.position.y = Y;
     /********************************************
      * END CODE
      *  ********************************************/
 
     m_local_wheel_odom_msg.pose.pose.position.z = 0.0f;
     m_local_wheel_odom_msg.pose.covariance = {0.1, 0, 0, 0, 0, 0, 0, 0.1, 0, 0, 0, 0, 0, 0, 0.2, 0, 0, 0,
-                                              0, 0, 0, 0.001, 0, 0, 0, 0, 0, 0, 0.001, 0, 0, 0, 0, 0, 0, 0.002};
+                                                0, 0, 0, 0.001, 0, 0, 0, 0, 0, 0, 0.001, 0, 0, 0, 0, 0, 0, 0.002};
 
     /* Velocities assignation */
     m_local_wheel_odom_msg.twist.twist.linear.x = X_vel;
@@ -268,16 +271,16 @@ void WheelOdometry::CalculateOdometry()
     // Adding displacement in [m] to the global message
 
     /********************************************
-     * Calculate the X and Y positions
-    float delta_X_global = ?;
-    float delta_Y_global = ?;
+     * Calculate the X and Y positions */
+    float delta_X_global = X_dot_global * dt;
+    float delta_Y_global = Y_dot_global * dt;
 
-    // Don't forget the offset :smile:
-    float X_global = ?;
-    float Y_global = ?;
+    // Don't forget the offset :smile: the last value?
+    float X_global = delta_X_global+m_global_wheel_odom_msg.pose.pose.position.x;
+    float Y_global = delta_Y_global+m_global_wheel_odom_msg.pose.pose.position.y;
 
-    m_global_wheel_odom_msg.pose.pose.position.x = ?;
-    m_global_wheel_odom_msg.pose.pose.position.y = ?;
+    m_global_wheel_odom_msg.pose.pose.position.x = X_global;
+    m_global_wheel_odom_msg.pose.pose.position.y = Y_global;
     /********************************************
      * END CODE
      *  ********************************************/
@@ -301,15 +304,15 @@ void WheelOdometry::CalculateOdometry()
         // Calculate total distance
 
         /********************************************
-         * Your Amazing tachometer
-        float d_increment = ?;
+         * Your Amazing tachometer*/   
+        float d_increment = sqrt((X_global-m_previous_x)*(X_global-m_previous_x)+(Y_global-m_previous_y)*(Y_global-m_previous_y));
 
         // Update previous data
-        m_previous_x = ?;
-        m_previous_y = ?;
+        m_previous_x = m_global_wheel_odom_msg.pose.pose.position.x;
+        m_previous_y = m_global_wheel_odom_msg.pose.pose.position.y;
 
         // Accumulate distance
-        m_total_distance.data = ?;
+        m_total_distance.data = m_total_distance.data + d_increment;
         /********************************************
          * END CODE
          *  ********************************************/

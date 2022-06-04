@@ -71,24 +71,24 @@ class Plotter(Node):
         # ---------------------------------------------------------------------
 
         # DONE BUT WHY TUPLE? WORKS WITH NORMAL VAR?
-        (self.control_ang_ln,) = self.ax[0].plot(
+        (self.control_ang_ln,) = self.ax[1].plot(
             [], [], "r", label="Control Angular Signal"
         )
-        (self.error_ang_ln,) = self.ax[0].plot([], [], "b", label="Angular Error")
+        (self.error_ang_ln,) = self.ax[1].plot([], [], "b", label="Angular Error")
         self.controller_ang_lns = [self.control_ang_ln, self.error_ang_ln]
-        self.ax[0].legend()
-        self.x_angular_data, self.y_angular_data = [[], []], [[], []]
+        self.ax[1].legend()
+        self.x_ang_data, self.y_ang_data = [[], []], [[], []]
 
-        (self.rpm_motor1_ln,) = self.ax[0].plot(
+        (self.rpm_motor1_ln,) = self.ax[2].plot(
             [], [], "r", label="RPM Frontal Right Motor"
         )
-        (self.rpm_motor2_ln,) = self.ax[0].plot(
+        (self.rpm_motor2_ln,) = self.ax[2].plot(
             [], [], "b", label="RPM Rear Right Motor"
         )
-        (self.rpm_motor3_ln,) = self.ax[0].plot(
+        (self.rpm_motor3_ln,) = self.ax[2].plot(
             [], [], "m", label="RPM Rear Left Motor"
         )
-        (self.rpm_motor4_ln,) = self.ax[0].plot(
+        (self.rpm_motor4_ln,) = self.ax[2].plot(
             [], [], "g", label="RPM Frontal Left Motor"
         )
         self.rpm_motors_lns = [
@@ -97,7 +97,7 @@ class Plotter(Node):
             self.rpm_motor3_ln,
             self.rpm_motor4_ln,
         ]
-        self.ax[0].legend()
+        self.ax[2].legend()
         self.x_rpm_data, self.y_rpm_data = [[], [], [], []], [[], [], [], []]
 
         # =============================================================================
@@ -157,9 +157,8 @@ class Plotter(Node):
         self.ax[2].set_ylim(-170, 170)
         self.ax[2].set_title("RPMs")
 
-        # TODO include the rpms data? or return NONE? in what branch?
         # return [self.controller_lin_lns, self.controller_ang_lns]
-        # return [self.controller_lin_lns, self.controller_ang_lns, self.rpm_motors_lns]
+        return [self.controller_lin_lns, self.controller_ang_lns, self.rpm_motors_lns]
 
     def update_plot(self, frame=None) -> None:
         """!
@@ -171,7 +170,6 @@ class Plotter(Node):
         self.controller_lin_lns[1].set_data(
             self.x_linear_data[1], self.y_linear_data[1]
         )
-
         self.controller_ang_lns[0].set_data(self.x_ang_data[0], self.y_ang_data[0])
         self.controller_ang_lns[1].set_data(self.x_ang_data[1], self.y_ang_data[1])
 
@@ -181,7 +179,6 @@ class Plotter(Node):
         self.rpm_motors_lns[2].set_data(self.x_rpm_data[2], self.y_rpm_data[2])
         self.rpm_motors_lns[3].set_data(self.x_rpm_data[3], self.y_rpm_data[3])
 
-        # return [self.controller_lin_lns, self.controller_ang_lns]
         return [self.controller_lin_lns, self.controller_ang_lns, self.rpm_motors_lns]
 
     # Callback functions
@@ -217,7 +214,6 @@ class Plotter(Node):
         Callback function to get motors RPMS feedback
         @param msg 'MotorsRPM' message containing the velocities of the robot
         """
-
         self.y_rpm_data[0].append(msg.rpms_fr)
         x_index = len(self.x_rpm_data[0])
         self.x_rpm_data[0].append(x_index + 1)
@@ -254,14 +250,17 @@ def main(args=None) -> None:
     # Use the function spin_node
     # https://realpython.com/intro-to-python-threading/
     #
+    node_thread = threading.Thread(target=plotter_node.spin_node)
+    node_thread.start()
 
-    node_thread = threading.Thread(target=plotter_node.spin_node())
-
+    # THREAD TO FUNCANIMATION?
     # End Code
     # ---------------------------------------------------------------------
 
     ani = FuncAnimation(
-        plotter_node.fig, plotter_node.update_plot, init_func=plotter_node.plot_init
+        plotter_node.fig,
+        plotter_node.update_plot,
+        init_func=plotter_node.plot_init,
     )
 
     plt.show(block=True)

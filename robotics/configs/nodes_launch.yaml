@@ -17,7 +17,7 @@ NODE_MOTION_SPEED_CONTROL:
   respawn: true
   respawn_delay: 5.0
 NODE_PLOTTER:
-  launch: 1
+  launch: 0
   node_executable: plotter_node
   package: plotter
   respawn: true
@@ -29,7 +29,7 @@ NODE_RPM_CONVERTER:
   respawn: true
   respawn_delay: 5.0
 NODE_WHEEL_ODOMETRY:
-  launch: 0
+  launch: 1
   node_executable: wheel_odometry
   package: wheel_odometry
   respawn: true

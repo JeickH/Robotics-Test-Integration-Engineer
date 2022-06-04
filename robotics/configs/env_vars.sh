@@ -33,3 +33,7 @@ export ODOMETRY_WHEEL_RADIUS=0.079  # [float] Wheel radius (Important for kinema
 export CONVERTER_WHEEL_MAX_RPM=165.0   # [float][rpms] Maximum allow RPM to our current wheels
 export CONVERTER_WHEEL_SPD_FACTOR=17.28 # [float][factor] Factor for max velocity including the radius 
 export CHASSIS_PUBLISH_TIME=180             # [int][milliseconds] Period to publish 0 data if there is not a velocity/position reference to avoid disarm the chassis
+
+#--------------------
+# AUDO DEVICE
+export SOUND_DEVICE='sysdefault:CARD=Generic_1'

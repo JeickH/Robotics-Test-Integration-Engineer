@@ -112,7 +112,7 @@ if [ ! "$LAUNCH" == "0" ]; then
   #  ---------------------------------------------------------------------
   #  ROS2 Launching
   echo  "[INFO]: ROS2 launching ... "
-  ros2 launch "/workspace/robotics/configs/robotics.launch.py"
+  ros2 launch "/workspace/robotics/configs/robotics.launch.py" && ros2 bag play "/workspace/robotics/configs/subset/subset_0.db3"
 fi
 
 #  ----------------------------------------------------------------------
