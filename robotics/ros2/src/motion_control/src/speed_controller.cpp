@@ -8,6 +8,7 @@
 
 #include "motion_control/speed_controller.hpp"
 
+
 rclcpp_lifecycle::node_interfaces::LifecycleNodeInterface::CallbackReturn SpeedController::on_configure(
     const rclcpp_lifecycle::State &)
 {
@@ -110,6 +111,16 @@ void SpeedController::Controller()
      ********************************************/
     // Use this message
     auto output_error_msg = std::make_unique<geometry_msgs::msg::TwistStamped>();
+    // calculate the error
+    float robot_vx = m_robot_twist.twist.linear.x ;
+    float robot_wz = m_robot_twist.twist.angular.z ;
+
+    output_error_msg->twist.linear.x = lin_vx - robot_vx ;
+    output_error_msg->twist.angular.z = ang_wz - robot_wz ;
+    // fill the header stamp
+    output_error_msg->header.stamp = this->now() ;
+    // publish the message
+    m_ctrl_error_pub->publish(std::move(output_error_msg));
 
     // How could I publish a message of type std::shared_ptr?
     /********************************************

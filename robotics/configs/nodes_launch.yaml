@@ -1,5 +1,5 @@
 NODE_INTERFACES:
-  launch: 0
+  launch: 1
   node_executable: interfaces_node
   package: interfaces
   respawn: true
@@ -11,13 +11,13 @@ NODE_LIFECYCLE_MANAGER:
   respawn: true
   respawn_delay: 5.0
 NODE_MOTION_SPEED_CONTROL:
-  launch: 0
+  launch: 1
   node_executable: speed_controller
   package: motion_control
   respawn: true
   respawn_delay: 5.0
 NODE_PLOTTER:
-  launch: 0
+  launch: 1
   node_executable: plotter_node
   package: plotter
   respawn: true

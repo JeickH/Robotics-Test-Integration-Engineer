@@ -8,11 +8,11 @@
 set -e
 
 function parse_yaml {
-   local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
-   sed -ne "s|^\($s\):|\1|" \
+  local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
+  sed -ne "s|^\($s\):|\1|" \
         -e "s|^\($s\)\($w\)$s:$s[\"']\(.*\)[\"']$s\$|\1$fs\2$fs\3|p" \
         -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p"  $1 |
-   awk -F$fs '{
+  awk -F$fs '{
     indent = length($1)/2;
     vname[indent] = $2;
     for (i in vname) {if (i > indent) {delete vname[i]}}
@@ -112,7 +112,7 @@ if [ ! "$LAUNCH" == "0" ]; then
   #  ---------------------------------------------------------------------
   #  ROS2 Launching
   echo  "[INFO]: ROS2 launching ... "
-  ros2 launch "/workspace/robotics/configs/robotics.launch.py" && ros2 bag play "/workspace/robotics/configs/subset/subset_0.db3"
+  ros2 launch "/workspace/robotics/configs/robotics.launch.py"
 fi
 
 #  ----------------------------------------------------------------------
