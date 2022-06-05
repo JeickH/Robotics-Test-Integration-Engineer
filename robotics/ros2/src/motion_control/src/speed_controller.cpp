@@ -112,11 +112,8 @@ void SpeedController::Controller()
     // Use this message
     auto output_error_msg = std::make_unique<geometry_msgs::msg::TwistStamped>();
     // calculate the error
-    float robot_vx = m_robot_twist.twist.linear.x ;
-    float robot_wz = m_robot_twist.twist.angular.z ;
-
-    output_error_msg->twist.linear.x = lin_vx - robot_vx ;
-    output_error_msg->twist.angular.z = ang_wz - robot_wz ;
+    output_error_msg->twist.linear.x = lin_vx - ctrl_lin_vel ;
+    output_error_msg->twist.angular.z = ang_wz - ctrl_ang_vel ;
     // fill the header stamp
     output_error_msg->header.stamp = this->now() ;
     // publish the message

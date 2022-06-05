@@ -70,7 +70,6 @@ class Plotter(Node):
         # End Code
         # ---------------------------------------------------------------------
 
-        # DONE BUT WHY TUPLE? WORKS WITH NORMAL VAR?
         (self.control_ang_ln,) = self.ax[1].plot(
             [], [], "r", label="Control Angular Signal"
         )
@@ -252,8 +251,6 @@ def main(args=None) -> None:
     #
     node_thread = threading.Thread(target=plotter_node.spin_node)
     node_thread.start()
-
-    # THREAD TO FUNCANIMATION?
     # End Code
     # ---------------------------------------------------------------------
 
