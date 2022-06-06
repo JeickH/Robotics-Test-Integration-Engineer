@@ -24,11 +24,11 @@ float PIDController::ThrottlePID(float ref_vx, float cur_vx, double dt)
         m_vx_int_error = 0;
         return 0;
     }else{
-
+    float fb_ctrl_offset = 1;
     // integral error
     m_vx_int_error += (ref_vx - cur_vx) * dt ;
     // PID equation
-    float out =  m_kp_thr * (ref_vx - cur_vx) + m_ki_thr * m_vx_int_error + m_kd_thr * (((ref_vx - cur_vx) - m_prev_prop_error)/ dt );
+    float out =  fb_ctrl_offset + m_kp_thr * (ref_vx - cur_vx) + m_ki_thr * m_vx_int_error + m_kd_thr * (((ref_vx - cur_vx) - m_prev_prop_error)/ dt );
     // update last proportional error
     m_vx_prop_ek1 = ref_vx - cur_vx;
     
@@ -60,11 +60,12 @@ float PIDController::SteeringPID(float ref_wz, float cur_wz, double dt)
         m_wz_int_error = 0;
         return 0;
     }else{
-
+    
+    float ff_ctrl_offset = 1;
     // integral error
     m_wz_int_error += (ref_wz - cur_wz) * dt ;
     // PID equation
-    float out =  m_kp_thr * (ref_wz - cur_wz) + m_ki_thr * m_vx_int_error + m_kd_thr * (((ref_wz - cur_wz) - m_prev_prop_error)/ dt ) + m_kff_str * ref_wz ;
+    float out = ff_ctrl_offset + m_kp_thr * (ref_wz - cur_wz) + m_ki_thr * m_vx_int_error + m_kd_thr * (((ref_wz - cur_wz) - m_prev_prop_error)/ dt ) + m_kff_str * ref_wz ;
     // update last proportional error
     m_wz_prop_ek1 = ref_wz - cur_wz;
     
