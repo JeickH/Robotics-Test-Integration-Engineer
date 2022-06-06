@@ -138,7 +138,7 @@ RUN pip3 install -U pip \
 
 # ------------------------------------------------------------------------------
 # ROS2 CONFIGS - ROS2 CONFIGS - ROS2 CONFIGS - ROS2 CONFIGS - ROS2 CONFIGS - ROS2
-
+RUN ./opt/ros/${ROS_DISTRO}/setup.sh
 # Logging variables
 # https://index.ros.org/doc/ros2/Tutorials/Logging-and-logger-configuration/
 # # If you would like more or less verbose formatting
