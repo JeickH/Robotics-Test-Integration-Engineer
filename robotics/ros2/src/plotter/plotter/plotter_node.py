@@ -43,28 +43,7 @@ class Plotter(Node):
         # Define Plotter Variables
         # =============================================================================
         self.fig, self.ax = plt.subplots(1, 3)
-        # Extrapoint
-        self.csfont = {
-            "fontname": "DejaVu Sans Mono",
-            "fontsize": 17,
-            "color": "#003cc6",
-        }
-        self.cbfont = {
-            "fontname": "DejaVu Sans Mono",
-            "fontsize": 22,
-            "color": "#003cc6",
-        }
-        self.axfont = {
-            "fontname": "DejaVu Sans Mono",
-            "fontsize": 10,
-            "color": "#003cc6",
-        }
-        self.lgfont = {
-            "fontsize": 12,
-            "facecolor": "#f5cd74",
-            "edgecolor": "#003cc6",
-        }
-        self.fig.suptitle("Amazing Plotter", **self.cbfont)
+        self.fig.suptitle("Amazing Plotter", fontsize=16)
         self.fig.set_size_inches(18.5, 10.5)
         # =============================================================================
         # Controller Lines
@@ -72,13 +51,11 @@ class Plotter(Node):
 
         # Linear
         (self.control_lin_ln,) = self.ax[0].plot(
-            [], [], "#003cc6", label="Control Linear Signal", linewidth=2
+            [], [], "r", label="Control Linear Signal"
         )
-        (self.error_linear_ln,) = self.ax[0].plot(
-            [], [], "#00f0ff", label="Linear Error", linewidth=2
-        )
+        (self.error_linear_ln,) = self.ax[0].plot([], [], "b", label="Linear Error")
         self.controller_lin_lns = [self.control_lin_ln, self.error_linear_ln]
-        self.ax[0].legend(**self.lgfont)
+        self.ax[0].legend()
         self.x_linear_data, self.y_linear_data = [[], []], [[], []]
 
         # Angular
@@ -94,26 +71,24 @@ class Plotter(Node):
         # ---------------------------------------------------------------------
 
         (self.control_ang_ln,) = self.ax[1].plot(
-            [], [], "#003cc6", label="Control Angular Signal", linewidth=2
+            [], [], "r", label="Control Angular Signal"
         )
-        (self.error_ang_ln,) = self.ax[1].plot(
-            [], [], "#00f0ff", label="Angular Error", linewidth=2
-        )
+        (self.error_ang_ln,) = self.ax[1].plot([], [], "b", label="Angular Error")
         self.controller_ang_lns = [self.control_ang_ln, self.error_ang_ln]
-        self.ax[1].legend(**self.lgfont)
+        self.ax[1].legend()
         self.x_ang_data, self.y_ang_data = [[], []], [[], []]
 
         (self.rpm_motor1_ln,) = self.ax[2].plot(
-            [], [], "r", label="RPM Frontal Right Motor", linewidth=2
+            [], [], "r", label="RPM Frontal Right Motor"
         )
         (self.rpm_motor2_ln,) = self.ax[2].plot(
-            [], [], "b", label="RPM Rear Right Motor", linewidth=2
+            [], [], "b", label="RPM Rear Right Motor"
         )
         (self.rpm_motor3_ln,) = self.ax[2].plot(
-            [], [], "m", label="RPM Rear Left Motor", linewidth=2
+            [], [], "m", label="RPM Rear Left Motor"
         )
         (self.rpm_motor4_ln,) = self.ax[2].plot(
-            [], [], "g", label="RPM Frontal Left Motor", linewidth=2
+            [], [], "g", label="RPM Frontal Left Motor"
         )
         self.rpm_motors_lns = [
             self.rpm_motor1_ln,
@@ -121,14 +96,8 @@ class Plotter(Node):
             self.rpm_motor3_ln,
             self.rpm_motor4_ln,
         ]
-        self.ax[2].legend(**self.lgfont)
+        self.ax[2].legend()
         self.x_rpm_data, self.y_rpm_data = [[], [], [], []], [[], [], [], []]
-        # Extra point
-        self.axes_curr_limits = {
-            "sp1": {"xlim": [0, 500], "ylim": [-3, 3]},
-            "sp2": {"xlim": [0, 500], "ylim": [-3, 3]},
-            "sp1": {"xlim": [0, 500], "ylim": [-170, 170]},
-        }
 
         # =============================================================================
         # ROS2 Stuffs
@@ -175,25 +144,17 @@ class Plotter(Node):
         """!
         Function to set the initial plot status.
         """
-        # Extrapoint
-
-        self.fig.patch.set_facecolor("#59c9ff")
-        # self.control_lin_ln.set_color("#f5cd74")
-        # self.error_linear_ln.set_color("#f5cd74")
-        # self.ax[0].yaxis.label.set_color("#f5cd74")
-        # self.fig.
-
-        self.ax[0].set_xlim(0, 500)
+        self.ax[0].set_xlim(0, 10000)
         self.ax[0].set_ylim(-3, 3)
-        self.ax[0].set_title("Linear Signal / Linear Error", **self.csfont)
+        self.ax[0].set_title("Linear Signal / Linear Error")
 
-        self.ax[1].set_xlim(0, 500)
+        self.ax[1].set_xlim(0, 10000)
         self.ax[1].set_ylim(-3, 3)
-        self.ax[1].set_title("Angular Signal / Angular Error", **self.csfont)
+        self.ax[1].set_title("Angular Signal / Angular Error")
 
-        self.ax[2].set_xlim(0, 500)
+        self.ax[2].set_xlim(0, 10000)
         self.ax[2].set_ylim(-170, 170)
-        self.ax[2].set_title("RPMs", **self.csfont)
+        self.ax[2].set_title("RPMs")
 
         # return [self.controller_lin_lns, self.controller_ang_lns]
         return [self.controller_lin_lns, self.controller_ang_lns, self.rpm_motors_lns]
@@ -216,12 +177,6 @@ class Plotter(Node):
         self.rpm_motors_lns[1].set_data(self.x_rpm_data[1], self.y_rpm_data[1])
         self.rpm_motors_lns[2].set_data(self.x_rpm_data[2], self.y_rpm_data[2])
         self.rpm_motors_lns[3].set_data(self.x_rpm_data[3], self.y_rpm_data[3])
-
-        # size the subplot dynamically
-        if len(self.x_rpm_data[0]) > 500:
-            self.ax[0].set_xlim(len(self.x_rpm_data[0]) - 500, len(self.x_rpm_data[0]))
-            self.ax[1].set_xlim(len(self.x_rpm_data[0]) - 500, len(self.x_rpm_data[0]))
-            self.ax[2].set_xlim(len(self.x_rpm_data[0]) - 500, len(self.x_rpm_data[0]))
 
         return [self.controller_lin_lns, self.controller_ang_lns, self.rpm_motors_lns]
 
