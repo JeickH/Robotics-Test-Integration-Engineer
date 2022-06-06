@@ -106,7 +106,6 @@ void Speaker::speakerCb(const std_msgs::msg::Int8::SharedPtr msg)
          ********************************************/
         else{
             readfd = open((m_path + "2.wav").c_str(), O_RDONLY);
-            //TODO understan this line
             status = pthread_create(&pthread_id, NULL, (THREADFUNCPTR)&Speaker::PlaySound, this);
         }
         /********************************************
@@ -166,7 +165,8 @@ void *Speaker::PlaySound()
      ********************************************/
     // This is just for clean the variable name and re-initialize it.
     msg.reset(new std_msgs::msg::Bool());
-
+    msg->data=true;
+    m_done_pub->publish(std::move(msg));
     /********************************************
      * END CODE
      ********************************************/
