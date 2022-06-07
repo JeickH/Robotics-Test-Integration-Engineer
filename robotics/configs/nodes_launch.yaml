@@ -34,3 +34,9 @@ NODE_WHEEL_ODOMETRY:
   package: wheel_odometry
   respawn: true
   respawn_delay: 5.0
+NODE_CUSTOM_LOCATION:
+  launch: 1
+  node_executable: location_node
+  package: custom_location
+  respawn: true
+  respawn_delay: 5.0
