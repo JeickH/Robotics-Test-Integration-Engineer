@@ -32,6 +32,14 @@ float PIDController::ThrottlePID(float ref_vx, float cur_vx, double dt)
     // update last proportional error
     m_vx_prop_ek1 = ref_vx - cur_vx;
     
+    // Anti wind-up
+    if(out > m_max_linear_spd){
+        out = m_max_linear_spd;
+    }else if(out < (-1) * m_max_linear_spd){
+        out = (-1) * m_max_linear_spd;
+    };
+
+    // printf("%f\n", out);
     return out;
     };
     
