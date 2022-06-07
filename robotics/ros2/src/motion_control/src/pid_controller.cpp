@@ -65,7 +65,7 @@ float PIDController::SteeringPID(float ref_wz, float cur_wz, double dt)
     // integral error
     m_wz_int_error += (ref_wz - cur_wz) * dt ;
     // PID equation
-    float out = ff_ctrl_offset + m_kp_thr * (ref_wz - cur_wz) + m_ki_thr * m_vx_int_error + m_kd_thr * (((ref_wz - cur_wz) - m_prev_prop_error)/ dt ) + m_kff_str * ref_wz ;
+    float out = ff_ctrl_offset + m_kp_thr * (ref_wz - cur_wz) + m_ki_thr * m_wz_int_error + m_kd_thr * (((ref_wz - cur_wz) - m_prev_prop_error)/ dt ) + m_kff_str * ref_wz ;
     // update last proportional error
     m_wz_prop_ek1 = ref_wz - cur_wz;
     
