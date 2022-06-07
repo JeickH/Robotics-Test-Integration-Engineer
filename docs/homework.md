@@ -249,33 +249,66 @@ Respond below in the same solution branch every question. In case your answer is
 
 1. [C++] What is the mean of the number "15" used in the `pthread_kill` inside the destructor method?
 
+R1./ The mean of the number 15 sended as parameter to the ptherad kill method is the number of the signall that is sended to the thread, this is a SIGTERM signal to politely kill a program. The SIGTERM signal is a generic signal used to cause program termination. Unlike SIGKILL, this signal can be blocked, handled, and ignored. It is the normal way to politely ask a program to terminate.The shell command kill generates SIGTERM by default.
+
+
 2. [C++] Why are we using `UniquePointer` instead of `SharedPointers` to publish a ROS2 message?
+
+R2./ Because in this case we use a unique_ptr as a safely managed resource that can be accessed only by that pointer and has an ownership instead the shared_ptr that could be accessed by other pointers
 
 3. [Logic] Why are we using an m_multi_sound variable? Explain ...
 
+R3./ This variable indicate us is the sound thread is available and avoid to  
+
 4. [C++] Why are we freeing the memory allocated by raw pointer "buff" variable and not freeing the memory allocated by the Shared and Unique Pointers? (HARD)
+
+R4./
 
 5. [C++] Why should we use a "member variable" (persistent over the class) to storage the integral error? `m_vx_int_error`
 
+R5./
+
 6. [Control] What is the function of the FeedForward controller?
+
+R6./ AC = Kp*error + Ki*integral(error) + Kd*deltaerror + Kff*steering_vel_ref + offset
+    the offset value allow us to fix a value in our control action
 
 7. [ROS2] What is the purpose of `CascadeLifecycleNode` type nodes?
 
+R7./ The purpose of the Cascade Lifecycle nodes is to handle those nodes as a states machine. This type of nodes have 
+    predefined states and allow us to handle through transition events
+
 8. [Robotics] Why is a global and a local `Odometry` calculated?
+
+R8./ Because this allow us to integrate others frameworks and applications such as nav2 or handle the reset of the local odometry without affect the global odometry. This could be useful in km record. 
 
 9. [Robotics] If the robot has 4 differential wheels, what type of chassis is it?
 
+R9./ THis type of chassis would be a 4 diff wheel chassis or ackerman type. This type of chassis has a holonomic motion, it means that can freely move in any direction due to its relation between controllable degrees of freedom are equal to the total of degrees of freedom 
+
 10. [Docker] Explain with your own words what is the instructions `apt-get autoremove && apt-get clean -y for?`
+
+R10./ Those commands are used to remove packages or volumes unused and clean the data of them storaged.
 
 11. [Docker] If you modify a layer what happen with the previous and the next ones?
 
+R11./ If you modify a layer, the previous ones are going to remain unchanged but the next ones are going to be executed again.
+
 12. [Docker] Can we change the basic image (`FROM ubuntu:20.04`) from the docker file to another?
+
+R12./ We can change the base image but we need to be carefully with some dependencies and packages because they could be not compatible with the new base image
 
 13. [C++] What is the [libsoft_speed.a](../robotics/ros2/src/motion_control/lib/) file and what is it for?
 
+R13./
+
 14. [Python] Why should we use a thread to spin the node?
 
+R14./ Is very useful threading when we need to execute many processes in a parallel way without synchronism issues
+
 15. [Python] Why is the limit on the Y-RPM graph 170?
+
+R15./ Because in the node rpm converter we define a variable that controls the maximum RPMs. This value depends of the motor and is set as 165
 
 Next questions are after you finish the project, it doesn't give points, but we really appreciate you feedback:
 * What do you think about this project? Is it hard or enough? Is it to complicated, is it well structure, explanations and instructions are clear?
