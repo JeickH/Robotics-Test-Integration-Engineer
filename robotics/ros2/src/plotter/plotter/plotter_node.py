@@ -309,7 +309,7 @@ class Plotter(Node):
             or msg.rpms_fl > self.upper_rpm_limit
         ):
             print(f"rpms upper than limit")
-            self.sound_msg.data = 3
+            self.sound_msg.data = 5
             self.pub_sound.publish(self.sound_msg)
 
         if (
@@ -319,7 +319,7 @@ class Plotter(Node):
             or msg.rpms_fl < self.lower_rpm_limit
         ):
             print(f"rpms lower than limit")
-            self.sound_msg.data = 0
+            self.sound_msg.data = 5
             self.pub_sound.publish(self.sound_msg)
 
         return
