@@ -72,10 +72,18 @@ class Plotter(Node):
 
         # Linear
         (self.control_lin_ln,) = self.ax[0].plot(
-            [], [], "#003cc6", label="Control Linear Signal", linewidth=2
+            [],
+            [],
+            "#003cc6",
+            label="Control Linear Signal",
+            linewidth=2,
         )
         (self.error_linear_ln,) = self.ax[0].plot(
-            [], [], "#00f0ff", label="Linear Error", linewidth=2
+            [],
+            [],
+            "#00f0ff",
+            label="Linear Error",
+            linewidth=2,
         )
         self.controller_lin_lns = [self.control_lin_ln, self.error_linear_ln]
         self.ax[0].legend(**self.lgfont)
@@ -218,9 +226,13 @@ class Plotter(Node):
         self.rpm_motors_lns[3].set_data(self.x_rpm_data[3], self.y_rpm_data[3])
 
         # size the subplot dynamically
+        if len(self.x_linear_data[0]) > 500:
+            self.ax[0].set_xlim(
+                len(self.x_linear_data[0]) - 500, len(self.x_linear_data[0])
+            )
+        if len(self.x_ang_data[0]) > 500:
+            self.ax[1].set_xlim(len(self.x_ang_data[0]) - 500, len(self.x_ang_data[0]))
         if len(self.x_rpm_data[0]) > 500:
-            self.ax[0].set_xlim(len(self.x_rpm_data[0]) - 500, len(self.x_rpm_data[0]))
-            self.ax[1].set_xlim(len(self.x_rpm_data[0]) - 500, len(self.x_rpm_data[0]))
             self.ax[2].set_xlim(len(self.x_rpm_data[0]) - 500, len(self.x_rpm_data[0]))
 
         return [self.controller_lin_lns, self.controller_ang_lns, self.rpm_motors_lns]
