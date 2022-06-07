@@ -263,10 +263,10 @@ R3./ This variable indicate us is the sound thread is available and avoid to
 4. [C++] Why are we freeing the memory allocated by raw pointer "buff" variable and not freeing the memory allocated by the Shared and Unique Pointers? (HARD)
 
 R4./
-
+ 
 5. [C++] Why should we use a "member variable" (persistent over the class) to storage the integral error? `m_vx_int_error`
 
-R5./
+R5./ Because is a variable that will be continuously measured over the time and that could be modified by many functions.
 
 6. [Control] What is the function of the FeedForward controller?
 
