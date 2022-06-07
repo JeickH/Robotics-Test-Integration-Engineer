@@ -37,3 +37,6 @@ export CHASSIS_PUBLISH_TIME=180             # [int][milliseconds] Period to publ
 #--------------------
 # AUDO DEVICE
 export SOUND_DEVICE='sysdefault:CARD=Generic_1'
+
+# EXTRA HOMEWORK DELETE PREVIOUS WORKSPACES
+export DELETE_BUILD='0'

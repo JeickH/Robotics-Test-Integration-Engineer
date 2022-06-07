@@ -57,6 +57,7 @@ source "${PWD%}/configs/env_vars.sh"
 
 #  ----------------------------------------------------------------------
 # Delete previous workspaces
+export DELETE_BUILD=$1
 
 if [ "$DELETE_BUILD" = "1" ] 
 then
@@ -106,7 +107,7 @@ if [ ! "$BUILD" == "0" ]; then
   echo  "[INFO]: ROS2 Build successful ... "
 fi
 echo  "[INFO]: ROS2 sourcing ... "
-source /workspace/robotics/ros2/install/setup.bash || true
+source /workspace/robotics/ros2/install/setup.bash || 
 
 if [ ! "$LAUNCH" == "0" ]; then
   #  ---------------------------------------------------------------------
