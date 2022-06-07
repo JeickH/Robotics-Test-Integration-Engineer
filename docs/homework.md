@@ -262,7 +262,7 @@ R3./ This variable indicate us is the sound thread is available and avoid to
 
 4. [C++] Why are we freeing the memory allocated by raw pointer "buff" variable and not freeing the memory allocated by the Shared and Unique Pointers? (HARD)
 
-R4./
+R4./ 
  
 5. [C++] Why should we use a "member variable" (persistent over the class) to storage the integral error? `m_vx_int_error`
 
@@ -300,7 +300,7 @@ R12./ We can change the base image but we need to be carefully with some depende
 
 13. [C++] What is the [libsoft_speed.a](../robotics/ros2/src/motion_control/lib/) file and what is it for?
 
-R13./
+R13./ the libsoft_speed.a file contains a library that allow us to calculate and implement a soft speed profile. 
 
 14. [Python] Why should we use a thread to spin the node?
 
