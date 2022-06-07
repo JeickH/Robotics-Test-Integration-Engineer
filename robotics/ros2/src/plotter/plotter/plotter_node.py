@@ -25,6 +25,8 @@ from geometry_msgs.msg import TwistStamped
 # ROS2 Custom Messages
 from usr_msgs.msg import MotorsRPM
 
+from std_msgs.msg import Int8
+
 
 # Plotter
 import matplotlib.pyplot as plt
@@ -38,6 +40,11 @@ class Plotter(Node):
         """
 
         super().__init__("plotter_node")
+
+        # Define limits to play sounds
+        self.upper_rpm_limit = 160
+        self.lower_rpm_limit = -160
+        self.sound_msg = Int8()
 
         # =============================================================================
         # Define Plotter Variables
@@ -171,6 +178,14 @@ class Plotter(Node):
             callback_group=self.callback_group,
         )
 
+        # Publisher
+        self.pub_sound = self.create_publisher(
+            msg_type=Int8,
+            topic="/device/speaker/command",
+            qos_profile=5,
+            callback_group=self.callback_group,
+        )
+
     # Hack Function to not block the thread
     def spin_node(self) -> None:
         """!
@@ -285,6 +300,28 @@ class Plotter(Node):
         self.y_rpm_data[3].append(msg.rpms_fl)
         x_index = len(self.x_rpm_data[3])
         self.x_rpm_data[3].append(x_index + 1)
+
+        # Extra homework sounds when rpm increase or decrease of X value
+        if (
+            msg.rpms_fr > self.upper_rpm_limit
+            or msg.rpms_rr > self.upper_rpm_limit
+            or msg.rpms_rl > self.upper_rpm_limit
+            or msg.rpms_fl > self.upper_rpm_limit
+        ):
+            print(f"rpms upper than limit")
+            self.sound_msg.data = 3
+            self.pub_sound.publish(self.sound_msg)
+
+        if (
+            msg.rpms_fr < self.lower_rpm_limit
+            or msg.rpms_rr < self.lower_rpm_limit
+            or msg.rpms_rl < self.lower_rpm_limit
+            or msg.rpms_fl < self.lower_rpm_limit
+        ):
+            print(f"rpms lower than limit")
+            self.sound_msg.data = 0
+            self.pub_sound.publish(self.sound_msg)
+
         return
 
 

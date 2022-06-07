@@ -34,7 +34,7 @@ class Location(threading.Thread, Node):
         self.msg = LocationMsg()
         self.done = False
 
-        # Publisher
+        # Subscribers
         self.sub_imu = self.create_subscription(
             msg_type=Imu,
             topic="/imu/data",
@@ -42,7 +42,6 @@ class Location(threading.Thread, Node):
             qos_profile=qos_profile_sensor_data,
             callback_group=self.callback_group,
         )
-        # Subscribers
         self.sub_wifi_geo = self.create_subscription(
             msg_type=NavSatFix,
             topic="/wifi_geo/fix",
@@ -57,6 +56,7 @@ class Location(threading.Thread, Node):
             qos_profile=qos_profile_sensor_data,
             callback_group=self.callback_group,
         )
+        # Publisher
         self.pub_custom_gps = self.create_publisher(
             msg_type=LocationMsg,
             topic="/custom_gps",

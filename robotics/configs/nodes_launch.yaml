@@ -1,5 +1,5 @@
 NODE_INTERFACES:
-  launch: 0
+  launch: 1
   node_executable: interfaces_node
   package: interfaces
   respawn: true
